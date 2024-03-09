@@ -9,6 +9,10 @@ function checkSpeed(state) {
     }
 }
 
+function checkIfSpeedisNumber(speed) {
+    return speed != undefined && speed != null && !isNaN(speed);
+}
+
 const speedState = {
     speed: null,
 };
@@ -43,7 +47,9 @@ speedDecreaseButton.addEventListener("click", () => {
     pTag.textContent =
         "Speed: " +
         (typeof newSpeed === "number" ? newSpeed.toFixed(2) : newSpeed);
-    speedState.speed ? (speedState.speed = newSpeed) : null;
+    checkIfSpeedisNumber(speedState.speed)
+        ? (speedState.speed = newSpeed)
+        : null;
 });
 
 let speedIncreaseButton = document.createElement("button");
@@ -57,7 +63,9 @@ speedIncreaseButton.addEventListener("click", () => {
     pTag.textContent =
         "Speed: " +
         (typeof newSpeed === "number" ? newSpeed.toFixed(2) : newSpeed);
-    speedState.speed ? (speedState.speed = newSpeed) : null;
+    checkIfSpeedisNumber(speedState.speed)
+        ? (speedState.speed = newSpeed)
+        : null;
 });
 
 dialog.appendChild(pTag);
@@ -70,15 +78,18 @@ button.addEventListener("click", () => {
     dialog.open &&
         (pTag.textContent =
             "Speed: " + (video ? video.playbackRate.toFixed(2) : "x.yz"));
-    !speedState.speed ? (speedState.speed = video.playbackRate) : null;
+    !checkIfSpeedisNumber(speedState.speed)
+        ? (speedState.speed = video.playbackRate)
+        : null;
 });
 
 document.body.insertBefore(dialog, document.body.firstChild);
 document.body.insertBefore(button, document.body.firstChild);
-document.addEventListener('keydown', function(event) {
-    if(event.shiftKey && event.code === "KeyQ"){
-        button.style.display = button.style.display === 'none' ? 'block' : 'none'
-        dialog.open = false
+document.addEventListener("keydown", function (event) {
+    if (event.shiftKey && event.code === "KeyQ") {
+        button.style.display =
+            button.style.display === "none" ? "block" : "none";
+        dialog.open = false;
     }
 });
 setInterval(() => checkSpeed(speedState), 5000);
